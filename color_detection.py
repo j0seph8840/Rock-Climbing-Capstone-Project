@@ -38,4 +38,34 @@ def create_color_masked_image(image, colors, labels):
         masked_image = np.where(color_mask == 255, image, masked_image)
     
     # Blend the masked image with the grayscale image
-    resu
+    result = cv2.addWeighted(masked_image, 0.7, gray_image, 0.3, 0)
+    
+    return result
+
+def main():
+    directory = "/Users/josephpalacios/Desktop/School/Fall 2024/Rock-Climbing-Capstone-Project/Holds"
+    image_files = glob.glob(f"{directory}/*.jpg") + glob.glob(f"{directory}/*.JPG")
+
+    if not image_files:
+        print(f"No JPG files found in {directory}")
+        return
+
+    for file in image_files:
+        image = cv2.imread(file)
+        if image is None:
+            print(f"Failed to load image: {file}")
+            continue
+
+        rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        colors, labels = cluster_colors(rgb_image, n_clusters=5)  # Adjust n_clusters as needed
+        
+        result_image = create_color_masked_image(rgb_image, colors, labels)
+        
+        # Display the result
+        plt.figure(figsize=(12, 6))
+        plt.subplot(121), plt.imshow(rgb_image), plt.title('Original Image')
+        plt.subplot(122), plt.imshow(result_image), plt.title('Color Masked Image')
+        plt.show()
+
+if __name__ == "__main__":
+    main()

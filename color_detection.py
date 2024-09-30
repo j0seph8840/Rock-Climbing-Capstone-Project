@@ -25,7 +25,7 @@ def detect_holds_by_color(image, color_ranges):
             color_rgb = cv2.cvtColor(np.uint8([[lower_bound]]), cv2.COLOR_HSV2RGB)[0][0]
             color_rgb = tuple(int(c) for c in color_rgb)  # Convert to tuple for OpenCV
 
-            # Draw the bounding box with thicker lines (e.g., thickness=5) and respective color
+            # Draw the bounding box with its respective color
             cv2.rectangle(output_image, (x_min, y_min), (x_max, y_max), color_rgb, 20)
 
     return output_image, mask
@@ -44,7 +44,7 @@ def main():
     }
 
     # Get image file paths
-    images = glob.glob('Rock-Climbing-Capstone-Project/Holds/*.jpg')
+    images = glob.glob('Rock-Climbing-Capstone-Project/Test Holds/*.jpg')
 
     for image_path in images:
         # Load image
